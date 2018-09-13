@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Table from './components/Table.js';
+import CurrenciesGrid from './components/CurrenciesGrid.js';
 
 const app = document.getElementById('app');
 
-ReactDOM.render(<Table />, app);
+ReactDOM.render(<CurrenciesGrid />, app);
