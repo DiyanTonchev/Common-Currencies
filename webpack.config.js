@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
     context: path.join(__dirname),
     devtool: debug ? 'inline-sourcemap' : null,
+    mode: debug ? 'development' : 'production',
     entry: './src/js/client.js',
     output: {
         path: __dirname + '/src/',
