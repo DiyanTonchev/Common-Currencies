@@ -8,53 +8,34 @@ class Table extends Component {
         super(props, context);
         this._columns = [
             {
-                key: 'id',
-                name: 'ID',
-                width: 80,
+                key: 'name',
+                name: 'Name',
                 filterable: true
             },
             {
-                key: 'task',
-                name: 'Title',
+                key: 'code',
+                name: 'Code',
                 filterable: true
             },
             {
-                key: 'priority',
-                name: 'Priority',
-                filterable: true
-            },
-            {
-                key: 'issueType',
-                name: 'Issue Type',
-                filterable: true
-            },
-            {
-                key: 'complete',
-                name: '% Complete',
-                filterable: true
-            },
-            {
-                key: 'startDate',
-                name: 'Start Date',
-                filterable: true
-            },
-            {
-                key: 'completeDate',
-                name: 'Expected Complete',
+                key: 'decimal_digits',
+                name: 'Decimal Digits',
                 filterable: true
             }
         ];
 
-        this.state = { rows: this.createRows(), filters: {} };
+        this.state = { filters: {} };
     }
 
     componentDidMount() {
         fetch("../../common-currencies.json")
             .then(res => res.json())
             .then((result) => {
+                let rows = this.createRows(result);
                 this.setState({
                     isLoaded: true,
-                    items: result.items
+                    items: result,
+                    rows: rows
                 });
             },
                 (error) => {
@@ -66,23 +47,15 @@ class Table extends Component {
             )
     }
 
-    getRandomDate = (start, end) => {
-        return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
-    };
-
-    createRows = () => {
+    createRows = (items) => {
         let rows = [];
-        for (let i = 1; i < 1000; i++) {
+        for (let key in items) {
             rows.push({
-                id: i,
-                task: 'Task ' + i,
-                complete: Math.min(100, Math.round(Math.random() * 110)),
-                priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-                issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
-                startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
-                completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
+                name: items[key].name,
+                code: items[key].code,
+                decimal_digits: items[key].decimal_digits
             });
-        }
+        }  
 
         return rows;
     };
