@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -45,7 +44,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style!css'
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" }
+        ]
       }
     ]
   }

@@ -1,34 +1,16 @@
 import React, { Component } from 'react';
-import ReactDataGrid from 'react-data-grid';
-
-const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
+import { DataTable } from 'react-data-components';
+import 'react-data-components/css/table-twbs.css';
 
 const COLUMN_DEFS = [
-  {
-    key: 'name',
-    name: 'Name',
-    sortable: true,
-    sort: 'asc',
-    filterable: true
-  },
-  {
-    key: 'code',
-    name: 'Code',
-    sortable: true,
-    filterable: true
-  },
-  {
-    key: 'decimal_digits',
-    name: 'Decimal Digits',
-    sortable: true,
-    filterable: true
-  }
+  { title: 'Name', prop: 'name' },
+  { title: 'Code', prop: 'code' },
+  { title: 'Decimal Digits', prop: 'decimal_digits' }
 ];
 
 class CurrenciesGrid extends Component {
 
   state = {
-    filters: {},
     isLoaded: false,
     rows: []
   }
@@ -65,50 +47,18 @@ class CurrenciesGrid extends Component {
     return rows;
   };
 
-  getRows = () => {
-    return Selectors.getRows(this.state);
-  };
-
-  getSize = () => {
-    return this.getRows().length;
-  };
-
-  rowGetter = (rowIdx) => {
-    let rows = this.getRows();
-    return rows[rowIdx];
-  };
-
-  handleGridSort = (sortColumn, sortDirection) => {
-    this.setState({ sortColumn, sortDirection });
-  };
-
-  handleFilterChange = (filter) => {
-    let { newFilters } = this.state.filters;
-    if (filter.filterTerm) {
-      newFilters[filter.column.key] = filter;
-    } else {
-      delete newFilters[filter.column.key];
-    }
-
-    this.setState({ filters: newFilters });
-  };
-
-  onClearFilters = () => {
-    this.setState({ filters: {} });
-  };
-
   render() {
+    let { rows } = this.state
     return (
-        <ReactDataGrid
+        <DataTable
+          className="table table-bordered"
+          keys="name"
           columns={COLUMN_DEFS}
-          rowGetter={this.rowGetter}
-          enableCellSelect={true}
-          rowsCount={this.getSize()}
-          minHeight={500}
-          toolbar={<Toolbar enableFilter={true} />}
-          onGridSort={this.handleGridSort}
-          onAddFilter={this.handleFilterChange}
-          onClearFilters={this.onClearFilters} />
+          initialPageLength={20}
+          pageLengthOptions={[ 5, 20, 50 ]}
+          initialData={rows}
+          initialSortBy={{ prop: 'name', order: 'ascending' }}
+        />
     );
   }
 }
