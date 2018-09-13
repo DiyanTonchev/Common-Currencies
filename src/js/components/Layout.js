@@ -3,7 +3,7 @@ import ReactDataGrid from 'react-data-grid'
 
 const { Toolbar, Data: { Selectors } } = require('react-data-grid-addons');
 
-class Example extends Component {
+class Table extends Component {
     constructor(props, context) {
         super(props, context);
         this._columns = [
@@ -46,6 +46,24 @@ class Example extends Component {
         ];
 
         this.state = { rows: this.createRows(), filters: {} };
+    }
+
+    componentDidMount() {
+        fetch("../../common-currencies.json")
+            .then(res => res.json())
+            .then((result) => {
+                this.setState({
+                    isLoaded: true,
+                    items: result.items
+                });
+            },
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
     }
 
     getRandomDate = (start, end) => {
@@ -111,4 +129,4 @@ class Example extends Component {
     }
 }
 
-export default Example;
+export default Table;
