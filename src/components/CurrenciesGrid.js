@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SearchField from './SearchField';
-import 'react-data-components/css/table-twbs.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 class CurrenciesGrid extends Component {
