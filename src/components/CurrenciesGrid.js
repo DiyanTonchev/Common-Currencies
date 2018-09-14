@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { DataTable } from 'react-data-components';
+import SearchField from './SearchField';
 import 'react-data-components/css/table-twbs.css';
-import { BootstrapTable, TableHeaderColumn, SearchField  } from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 const COLUMN_DEFS = [
     { title: 'Name', prop: 'name' },
@@ -20,8 +21,11 @@ class CurrenciesGrid extends Component {
         super(props);
 
         this.options = {
-            defaultSortName: 'name',  // default sort column name
-            defaultSortOrder: 'asc'  // default sort order
+            defaultSortName: 'name',
+            defaultSortOrder: 'asc',
+            searchField: (properties) => {
+                return (<SearchField {...properties} />)
+            }
         };
     }
 
@@ -71,7 +75,7 @@ class CurrenciesGrid extends Component {
                     initialSortBy={{ prop: 'name', order: 'ascending' }}
 
                 />
-                <BootstrapTable data={rows} options={this.options}>
+                <BootstrapTable data={rows} options={this.options} search>
                     <TableHeaderColumn dataField='name' isKey dataSort>Name</TableHeaderColumn>
                     <TableHeaderColumn dataField='code' dataSort>Code</TableHeaderColumn>
                     <TableHeaderColumn dataField='decimal_digits' dataSort>Decimal Digits</TableHeaderColumn>
