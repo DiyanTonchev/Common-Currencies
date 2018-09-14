@@ -62,7 +62,7 @@ class CurrenciesGrid extends Component {
                 symbol: items[key].symbol,
                 symbol_native: items[key].symbol_native,
                 rounding: items[key].rounding,
-                name_plural: items[key].name_plural,
+                name_plural: items[key].name_plural              
             });
         }
 
@@ -83,7 +83,7 @@ class CurrenciesGrid extends Component {
                     initialSortBy={{ prop: 'name', order: 'ascending' }}
 
                 />
-                <BootstrapTable data={rows} options={this.options} search>
+                <BootstrapTable data={rows} options={this.options} search hover>
                     <TableHeaderColumn dataField='name' isKey dataSort>Name</TableHeaderColumn>
                     <TableHeaderColumn dataField='code' dataSort>Code</TableHeaderColumn>
                     <TableHeaderColumn dataField='decimal_digits' dataSort>Decimal Digits</TableHeaderColumn>
