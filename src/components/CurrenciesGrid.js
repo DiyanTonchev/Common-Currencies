@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import { DataTable } from 'react-data-components';
 import SearchField from './SearchField';
 import 'react-data-components/css/table-twbs.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-
-const COLUMN_DEFS = [
-    { title: 'Name', prop: 'name' },
-    { title: 'Code', prop: 'code' },
-    { title: 'Decimal Digits', prop: 'decimal_digits' }
-];
 
 class CurrenciesGrid extends Component {
 
@@ -72,17 +65,6 @@ class CurrenciesGrid extends Component {
     render() {
         let { rows } = this.state
         return (
-            <React.Fragment>
-                <DataTable
-                    className="table table-bordered"
-                    keys="name"
-                    columns={COLUMN_DEFS}
-                    initialPageLength={20}
-                    pageLengthOptions={[5, 20, 50]}
-                    initialData={rows}
-                    initialSortBy={{ prop: 'name', order: 'ascending' }}
-
-                />
                 <BootstrapTable data={rows} options={this.options} search hover>
                     <TableHeaderColumn dataField='name' isKey dataSort>Name</TableHeaderColumn>
                     <TableHeaderColumn dataField='code' dataSort>Code</TableHeaderColumn>
@@ -92,8 +74,6 @@ class CurrenciesGrid extends Component {
                     <TableHeaderColumn dataField='rounding' dataSort hidden>Rounding</TableHeaderColumn>
                     <TableHeaderColumn dataField='name_plural' dataSort hidden>Name Plural</TableHeaderColumn>
                 </BootstrapTable>
-            </React.Fragment>
-
         );
     }
 }
