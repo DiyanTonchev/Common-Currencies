@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { DebounceInput } from 'react-debounce-input';
 
 class SearchField extends Component {
     getValue() {
@@ -13,12 +14,12 @@ class SearchField extends Component {
 
     render() {
         return (
-            <input
+            <DebounceInput
+                debounceTimeout={250}
                 className={`form-control`}
                 type='text'
-                defaultValue={this.props.defaultValue}
                 placeholder={this.props.placeholder}
-                onKeyUp={this.props.search} />
+                onChange={this.props.search} />
         );
     }
 }

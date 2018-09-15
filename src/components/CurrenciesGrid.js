@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import SearchField from './SearchField';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import SearchField from './SearchField';
+
+import './currencies-gird.css'
 
 class CurrenciesGrid extends Component {
 
@@ -15,15 +17,14 @@ class CurrenciesGrid extends Component {
         this.options = {
             defaultSortName: 'name',
             defaultSortOrder: 'asc',
-            searchField: (properties) => {
-                return (<SearchField {...properties} />)
-            },
-            onSearchChange: this.onSearchChange
+            searchField: () => {
+                return (<SearchField search={this.onSearch} placeholder={'Search'} />)
+            }
         };
     }
 
     componentDidMount() {
-        fetch("../../common-currencies.json")
+        fetch("data/common-currencies.json")
             .then(res => res.json())
             .then((result) => {
                 let rows = this.createRows(result);
@@ -34,17 +35,14 @@ class CurrenciesGrid extends Component {
             },
                 (error) => {
                     this.setState({
-                        isLoaded: true,
+                        isLoaded: false,
                         error
                     });
                 }
             )
     }
 
-    // onSearchChange = (searchText, colInfos, multiColumnSearch) => {
-    //     debugger
-    //   }
-    createRows = (items) => {
+    createRows(items) {
         let rows = [];
         for (let key in items) {
             rows.push({
@@ -52,27 +50,58 @@ class CurrenciesGrid extends Component {
                 code: items[key].code,
                 decimal_digits: items[key].decimal_digits,
                 symbol: items[key].symbol,
-                symbol_native: items[key].symbol_native,
-                rounding: items[key].rounding,
-                name_plural: items[key].name_plural              
+                name_plural: items[key].name_plural,
+                searchMatch: false
             });
         }
 
         return rows;
-    };
+    }
+
+    onSearch = (e) => {
+        let searchText = e.target.value;
+        let { rows } = this.state;
+
+        let newRows = rows.map((row) => {
+            for (let col in row) {
+                let hasMatched = false;
+                if (isNaN(row[col]) && isNaN(searchText)) {
+                    let cellValue = row[col].toLowerCase();
+                    hasMatched = cellValue.includes(searchText.toLowerCase());
+                } else if (searchText && !isNaN(searchText)) {
+                    hasMatched = row[col] === Number(searchText)
+                }
+
+                if (hasMatched) {
+                    row.searchMatch = true;
+                    break;
+                } else {
+                    row.searchMatch = false;
+                }
+            }
+
+            return row;
+        });
+
+        this.setState({ rows: newRows });
+    }
+
+    trClassFormat(row) {
+        return row.searchMatch ? 'search-matched' : '';
+    }
 
     render() {
-        let { rows } = this.state
+        let { rows } = this.state;
+
         return (
-                <BootstrapTable data={rows} options={this.options} search hover>
-                    <TableHeaderColumn dataField='name' isKey dataSort>Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='code' dataSort>Code</TableHeaderColumn>
-                    <TableHeaderColumn dataField='decimal_digits' dataSort>Decimal Digits</TableHeaderColumn>
-                    <TableHeaderColumn dataField='symbol' dataSort hidden>Symbol</TableHeaderColumn>
-                    <TableHeaderColumn dataField='symbol_native' dataSort hidden>Symbol Native</TableHeaderColumn>
-                    <TableHeaderColumn dataField='rounding' dataSort hidden>Rounding</TableHeaderColumn>
-                    <TableHeaderColumn dataField='name_plural' dataSort hidden>Name Plural</TableHeaderColumn>
-                </BootstrapTable>
+            <BootstrapTable data={rows} options={this.options} trClassName={this.trClassFormat} search hover>
+                <TableHeaderColumn dataField='name' isKey dataSort>Name</TableHeaderColumn>
+                <TableHeaderColumn dataField='code' dataSort>Code</TableHeaderColumn>
+                <TableHeaderColumn dataField='decimal_digits' dataSort>Decimal Digits</TableHeaderColumn>
+                <TableHeaderColumn dataField='symbol' hidden>Symbol</TableHeaderColumn>
+                <TableHeaderColumn dataField='name_plural' hidden>Name Plural</TableHeaderColumn>
+                <TableHeaderColumn dataField='searchMatch' hidden searchable={false}></TableHeaderColumn>
+            </BootstrapTable>
         );
     }
 }
