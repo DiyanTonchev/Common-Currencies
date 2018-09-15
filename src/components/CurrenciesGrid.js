@@ -24,7 +24,7 @@ class CurrenciesGrid extends Component {
     }
 
     componentDidMount() {
-        fetch("data/common-currencies.json")
+        fetch('data/common-currencies.json')
             .then(res => res.json())
             .then((result) => {
                 let rows = this.createRows(result);
