@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 
 class SearchField extends Component {
-    getValue() {
-        debugger;
-        let value = this.node.value;
-        return value;
-    }
-
-    setValue(value) {
-        this.node.value = value;
-    }
-
     render() {
         let { placeholder, search } = this.props;
         return (
