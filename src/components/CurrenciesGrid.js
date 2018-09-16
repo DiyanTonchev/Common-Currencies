@@ -76,6 +76,8 @@ class CurrenciesGrid extends Component {
                     if (hasMatched) {
                         row.searchMatch = true;
                         break;
+                    } else {
+                        row.searchMatch = false;
                     }
                 } else {
                     row.searchMatch = false;
