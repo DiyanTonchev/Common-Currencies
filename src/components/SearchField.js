@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { DebounceInput } from 'react-debounce-input';
 
 class SearchField extends Component {
     getValue() {
-        let value = ReactDOM.findDOMNode(this).value;
+        debugger;
+        let value = this.node.value;
         return value;
     }
 
     setValue(value) {
-        ReactDOM.findDOMNode(this).value = value;
+        this.node.value = value;
     }
 
     render() {
+        let { placeholder, search } = this.props;
         return (
             <DebounceInput
                 debounceTimeout={250}
-                className={`form-control`}
+                className={'form-control'}
                 type='text'
-                placeholder={this.props.placeholder}
-                onChange={this.props.search} />
+                placeholder={placeholder}
+                onChange={search}
+            />
         );
     }
 }

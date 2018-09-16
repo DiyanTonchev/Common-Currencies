@@ -65,16 +65,18 @@ class CurrenciesGrid extends Component {
         let newRows = rows.map((row) => {
             for (let col in row) {
                 let hasMatched = false;
-                if (isNaN(row[col]) && isNaN(searchText)) {
-                    let cellValue = row[col].toLowerCase();
-                    hasMatched = cellValue.includes(searchText.toLowerCase());
-                } else if (searchText && !isNaN(searchText)) {
-                    hasMatched = row[col] === Number(searchText)
-                }
+                if (searchText) {
+                    if (typeof row[col] === 'string') {
+                        let cellValue = row[col].toLowerCase();
+                        hasMatched = cellValue.includes(searchText.toLowerCase());
+                    } else if (typeof row[col] === typeof Number(searchText)) {
+                        hasMatched = row[col] === Number(searchText);
+                    }
 
-                if (hasMatched) {
-                    row.searchMatch = true;
-                    break;
+                    if (hasMatched) {
+                        row.searchMatch = true;
+                        break;
+                    }
                 } else {
                     row.searchMatch = false;
                 }
